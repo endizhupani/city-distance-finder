@@ -13,7 +13,7 @@ public class App
 {
     public static void main( String[] args )
     {
-        ApiAccess apiAccessData = ApiAccessFactory.getInstance("AIzaSyBjTvvmLUYc0YqMhdRwMWkT3vEAd0ep8T4");
+        ApiAccess apiAccessData = ApiAccessFactory.getInstance("[LOCATION_API_KEY]");
         try {
             new Ui(apiAccessData).execute();
         } catch (IOException e) {
