@@ -94,3 +94,4 @@ hs_err_pid*
 locationservice/src/main/resources/
 locationservice/src/test/java/com/endi/locationservices/concrete/
 locationservice/target/
+.idea
