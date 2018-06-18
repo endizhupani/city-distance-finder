@@ -7,9 +7,10 @@ import com.endi.locationservices.objects.City;
 import com.endi.locationservices.objects.Distance;
 import com.endi.locationservices.objects.UnitOfMeasurement;
 import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
+import com.google.maps.GeocodingApiRequest;
 import com.google.maps.errors.ApiException;
 import com.google.maps.errors.InvalidRequestException;
+import com.google.maps.model.ComponentFilter;
 import com.google.maps.model.GeocodingResult;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Endi Zhupani on 18/06/2018.
+ * Provider for the services of Google location API
  */
 public class GoogleLocationServiceProvider implements ILocationServiceProvider {
 
@@ -38,7 +39,11 @@ public class GoogleLocationServiceProvider implements ILocationServiceProvider {
     public List<City> getCitiesMatching(String name, String countryName) throws CityDistanceException {
         String operation = "Getting cities matching:\nCity - " + name + "\nCountry - " +countryName;
         try {
-            GeocodingResult[] result =  GeocodingApi.geocode(geoApiContext, name + ", " + countryName).await();
+            GeocodingApiRequest request = new GeocodingApiRequest(geoApiContext);
+            ComponentFilter filterCity = new ComponentFilter("locality", name);
+            ComponentFilter filterCountry = new ComponentFilter("country", countryName);
+            request.components(filterCity, filterCountry);
+            GeocodingResult[] result = request.await();
             return Helpers.MapToCityList(result);
         } catch (ApiException e) {
 
@@ -47,9 +52,7 @@ public class GoogleLocationServiceProvider implements ILocationServiceProvider {
                 throw new CityDistanceException("Invalid request to the API", operation);
             }
             throw new CityDistanceException(e, operation);
-        } catch (InterruptedException e) {
-            throw new CityDistanceException(e, operation);
-        } catch (IOException e) {
+        } catch (InterruptedException | IOException e) {
             throw new CityDistanceException(e, operation);
         }
     }

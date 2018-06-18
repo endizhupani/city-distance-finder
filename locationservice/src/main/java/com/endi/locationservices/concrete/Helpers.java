@@ -2,6 +2,7 @@ package com.endi.locationservices.concrete;
 
 import com.endi.locationservices.objects.City;
 import com.endi.locationservices.objects.Location;
+import com.endi.locationservices.objects.UnitOfMeasurement;
 import com.google.maps.model.AddressComponent;
 import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
@@ -11,10 +12,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by Endi Zhupani on 18/06/2018.
+ * Class with static helper methods
  */
 public class Helpers {
-    public static List<City> MapToCityList(GeocodingResult[] result) {
+    static List<City> MapToCityList(GeocodingResult[] result) {
         if (result == null || result.length == 0) {
             return null;
         }
@@ -37,5 +38,21 @@ public class Helpers {
         }
 
         return cities;
+    }
+
+    public static String getUnitText(UnitOfMeasurement u) {
+        String result = "";
+        switch (u) {
+            case KILOMETERS:
+                result = "km";
+                break;
+            case CENTIMETERS:
+                result = "cm";
+                break;
+            case METERS:
+                result = "m";
+                break;
+        }
+        return result;
     }
 }
